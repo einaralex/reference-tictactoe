@@ -1,0 +1,19 @@
+version: '2'
+services:
+  server:
+    image: einaralex/tictactoe
+    environment:
+      - PGHOST=pg2
+      - PGPORT=5432
+      - PORT=8080
+    depends_on:
+      - pg2
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+  pg2:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    ports:
+      - "5432:5432"

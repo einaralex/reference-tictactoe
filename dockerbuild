@@ -1,12 +1,9 @@
 #!/bin/bash
 
-cd client
-npm run build --silent
-cd ..
+
 echo Running build...
 npm run build --silent
-echo Copying dockerfile
-cp ./Dockerfile ./build
+
 
 
 docker build -t einaralex/tictactoe .
