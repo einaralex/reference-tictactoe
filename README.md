@@ -1,3 +1,5 @@
+Amazon web service: http://52.214.66.118/
+
 ## Application base for HGOP 2016 Student project
 
 Global installation requirements:
