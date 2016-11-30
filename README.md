@@ -54,7 +54,7 @@ npm run start
 ```
 
 At this point you should see the HGOP intro page open in your browser.
-If not, you should be able to point your browser to http://localhost:3000 and open it.
+If not, you should be able to point your browser to http://localhost:8080 and open it.
 
 To run client tests in watch mode:
 ```
@@ -87,4 +87,3 @@ achieving near-linear scaling of servers in clustered environments is a concern.
 
 Note that transaction support, error handling and logging are incomplete, and many other details that would be required in
 production-ready clustered applications are not present. One such is persistent user sessions.
-
