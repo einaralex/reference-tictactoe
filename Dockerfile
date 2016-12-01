@@ -6,4 +6,4 @@ COPY package.json .
 COPY Dockerfile .
 RUN npm install --silent
 EXPOSE 8080
-CMD ["node", "run.js"]
+CMD ["npm","migratedb-prod","&&","node", "run.js"]

@@ -1,7 +1,7 @@
 version: '2'
 services:
   server:
-    image: einaralex/tictactoe
+    image: einaralex/tictactoe:<%= ENV['GIT_COMMIT'] %>
     environment:
       PGHOST: pg2
       PGPORT: 5432
