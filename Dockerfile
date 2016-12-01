@@ -4,6 +4,7 @@ ENV NODE_PATH=.
 COPY ./build/ .
 COPY package.json .
 COPY Dockerfile .
+COPY scripts_library/ ./scripts_library
 RUN npm install --silent
 EXPOSE 8080
-CMD ["npm","migratedb-prod","&&","node", "run.js"]
+CMD ["./scripts_library/dockerfile.sh"]
