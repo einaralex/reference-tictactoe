@@ -5,10 +5,11 @@ services:
     environment:
       PGHOST: pg2
       PGPORT: 5432
-      PORT: 8080
+      PORT: 3000
     depends_on:
       - pg2
     ports:
+      - "3000:3000"
       - "8080:8080"
   pg2:
     image: postgres
