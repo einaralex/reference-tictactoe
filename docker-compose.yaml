@@ -3,15 +3,15 @@ services:
   server:
     image: einaralex/tictactoe:${GIT_COMMIT}
     environment:
-      PGHOST: pg2
+      PGHOST: postgres
       PGPORT: 5432
       PORT: 3000
     depends_on:
-      - pg2
+      - postgres
     ports:
       - "3000:3000"
       - "8080:8080"
-  pg2:
+  postgres:
     image: postgres
     environment:
       POSTGRES_PASSWORD: mysecretpassword
