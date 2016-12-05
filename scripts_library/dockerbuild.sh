@@ -36,7 +36,7 @@ cat > ./build/static/version.html << _EOF_
 _EOF_
 
 #Write GIT_COMMIT to .env file
-./envfile.sh
+./scripts_library/envfile.sh
 
 echo Building docker
 docker build -t einaralex/tictactoe:$GIT_COMMIT .

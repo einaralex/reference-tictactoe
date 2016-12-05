@@ -7,3 +7,4 @@ todo.md
 npm-debug.log*
 commands
 .DS_Store
+hgop-key-pair.pem
