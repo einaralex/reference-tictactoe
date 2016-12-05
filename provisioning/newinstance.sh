@@ -1,9 +1,5 @@
 #!/bin/bash
 
-
-echo Cleaning build...
-m -rf ./build
-
 cd ../..
 cd AWS
 

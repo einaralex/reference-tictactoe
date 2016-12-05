@@ -1,19 +1,18 @@
-version: '2'
-services:
-  server:
-    image: einaralex/tictactoe:${GIT_COMMIT}
-    environment:
-      PGHOST: postgres
-      PGPORT: 5432
-      PORT: 3000
-    depends_on:
-      - postgres
-    ports:
-      - "80:3000"
-      - "3000:3000"
-  postgres:
-    image: postgres
-    environment:
-      POSTGRES_PASSWORD: mysecretpassword
-    ports:
-      - "5432:5432"
+web:
+  image: einaralex/tictactoe:${GIT_COMMIT}
+  environment:
+    PGHOST: postgres
+    PGPORT: 5432
+    PORT: 3000
+  links:
+    - postgres
+  ports:
+    - "80:3000"
+  env_file:
+    - '.env'
+postgres:
+  image: postgres
+  environment:
+    POSTGRES_PASSWORD: mysecretpassword
+  ports:
+    - "5432:5432"
