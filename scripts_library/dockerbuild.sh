@@ -35,7 +35,7 @@ cat > ./build/static/version.html << _EOF_
 </body>
 _EOF_
 
-#Write GIT_COMMIT to .env file
+#Write the git commit sha to GIT_COMMIT in .env file
 ./scripts_library/envfile.sh
 
 echo Building docker
@@ -49,7 +49,8 @@ if [[ $rc != 0 ]] ; then
 fi
 
 echo Pushing docker
-docker push einaralex/tictactoe:$GIT_COMMIT
+# -D fyrir Debug mode
+docker push -D einaralex/tictactoe:$GIT_COMMIT
 
 # Error handling
 rc=$?
