@@ -44,18 +44,18 @@ docker build -t einaralex/tictactoe:$GIT_COMMIT .
 # Error handling
 rc=$?
 if [[ $rc != 0 ]] ; then
-    echo "Docker build failed " $rc
+    echo "Docker build failed, error code: " $rc
     exit $rc
 fi
 
 echo Pushing docker
 # -D fyrir Debug mode
-docker push -D einaralex/tictactoe:$GIT_COMMIT
+docker push einaralex/tictactoe:$GIT_COMMIT
 
 # Error handling
 rc=$?
 if [[ $rc != 0 ]] ; then
-    echo "Docker push failed " $rc
+    echo "Docker push failed, error code: " $rc
     exit $rc
 fi
 
