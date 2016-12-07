@@ -29,11 +29,12 @@ stop:
 	./scripts_library/dockerstop.sh
 
 # a script to runner
-compose dockercompose compose docker:
+compose dockercompose  composedocker:
 	docker-compose up -d
 
 test:
 	npm run test
+
 
 apitest:
 	npm run apitest
