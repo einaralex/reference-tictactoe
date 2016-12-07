@@ -3,9 +3,11 @@
 # RUN THIS SCRIPT IN ROOT FOLDER
 # make deploy
 
+# Remove the previous build folder
 echo Cleaning build...
 rm -rf ./build
 
+# Run a npm script called build
 echo Building npm...
 npm run build --silent
 
@@ -16,11 +18,10 @@ if [[ $rc != 0 ]] ; then
   exit $rc
 fi
 
-
 echo Writing git informations to files
-cat > ./build/githash.txt << _EOF_
-$GIT_COMMIT
-_EOF_
+#cat > ./build/githash.txt << _EOF_
+#$GIT_COMMIT
+#_EOF_
 
 cat > ./build/static/version.html << _EOF_
 <!doctype html>
@@ -35,13 +36,13 @@ cat > ./build/static/version.html << _EOF_
 </body>
 _EOF_
 
-#Write the git commit sha to GIT_COMMIT in .env file
+# Write the git commit sha to GIT_COMMIT in .env file
 ./scripts_library/envfile.sh
 
 echo Building docker
 docker build -t einaralex/tictactoe:$GIT_COMMIT .
 
-# Error handling
+# Grab the exit code and display it - if it's not 0
 rc=$?
 if [[ $rc != 0 ]] ; then
     echo "Docker build FAILED with exit code: " $rc
@@ -49,10 +50,9 @@ if [[ $rc != 0 ]] ; then
 fi
 
 echo Pushing docker
-# -D fyrir Debug mode
 docker push einaralex/tictactoe:$GIT_COMMIT
 
-# Error handling
+# Grab the exit code and display it - if it's not 0
 rc=$?
 if [[ $rc != 0 ]] ; then
     echo "Docker push FAILED with exit code: " $rc

@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 Amazon web service: http://52.214.66.118/
 
-## Application base for HGOP 2016 Student project
-=======
 ## Application SOLUTION for HGOP 2016 Student project
->>>>>>> 8869bea3353f344008ceeafebc7b7895579dece1
 
 Global installation requirements:
 
