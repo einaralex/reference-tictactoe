@@ -22,11 +22,10 @@ exports.up = function(db,callback) {
   }, callback);};
 
 exports.up = function (db, callback) {
-  db.addColumn('aggregate_id', {
-    id: { type: 'int', primaryKey: true, autoIncrement: true },
-    json: 'string', 
-  }, callback);
-};
+    db.addColumn('eventlog', {
+      aggregate_id: { type: 'int'}
+    }, callback);
+  };
 
 exports.down = function(db) {
   db.dropTable('eventlog', callback);
