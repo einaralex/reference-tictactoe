@@ -19,7 +19,15 @@ exports.up = function(db,callback) {
     timestamp:{ type:'datetime'},
     id: { type: 'string', primaryKey: true },
     json: 'string'
-  }, callback);};
+  }, callback);
+};
+
+exports.up = function (db, callback) {
+  db.addColumn('aggregate_id', {
+    id: { type: 'int', primaryKey: true, autoIncrement: true },
+    json: 'string',
+  }, callback);
+};
 
 exports.down = function(db) {
   db.dropTable('commandlog', callback);
