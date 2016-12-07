@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # RUN THIS SCRIPT IN ROOT FOLDER
-# ./scripts dockerbuild
+# make deploy
 
 echo Cleaning build...
 rm -rf ./build
 
-echo Building...
+echo Building npm...
 npm run build --silent
 
-# Error handling
+# Grab the exit code and display it - if it's not 0
 rc=$?
 if [[ $rc != 0 ]] ; then
-  echo "NPM Build failed with exit code " $rc
+  echo "npm build FAILED with exit code: " $rc
   exit $rc
 fi
 
@@ -44,7 +44,7 @@ docker build -t einaralex/tictactoe:$GIT_COMMIT .
 # Error handling
 rc=$?
 if [[ $rc != 0 ]] ; then
-    echo "Docker build failed, error code: " $rc
+    echo "Docker build FAILED with exit code: " $rc
     exit $rc
 fi
 
@@ -55,7 +55,7 @@ docker push einaralex/tictactoe:$GIT_COMMIT
 # Error handling
 rc=$?
 if [[ $rc != 0 ]] ; then
-    echo "Docker push failed, error code: " $rc
+    echo "Docker push FAILED with exit code: " $rc
     exit $rc
 fi
 

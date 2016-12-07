@@ -5,6 +5,6 @@
 /.idea/
 todo.md
 npm-debug.log*
-commands
+.TODO
 .DS_Store
 hgop-key-pair.pem
