@@ -1,5 +1,4 @@
 version: '2'
-
 services:
   web:
     image: einaralex/tictactoe:${GIT_COMMIT}
@@ -10,7 +9,7 @@ services:
     links:
       - postgres
     ports:
-      - "80:3000" #
+      - "80:3000"
     env_file:
       - '.env'
   postgres:
