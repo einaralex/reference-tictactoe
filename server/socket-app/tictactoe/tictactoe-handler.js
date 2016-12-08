@@ -43,17 +43,31 @@ module.exports = function(injected){
                         }]);
                     },
                     "PlaceMove": function(cmd){
+                          //if gamestate is not full, you can't place a move
 
-                        // Check here for conditions which prevent command from altering state
-
-                        gameState.processEvents(events);
-
-                        // Check here for conditions which may warrant additional events to be emitted.
-                        eventHandler(events);
+                          if (!gameState.gameFull()){
+                              eventHandler( [{
+                                  gameId: cmd.gameId,
+                                  type: "GameNotFullCantPlaceMove",
+                                  user: cmd.user,
+                                  name: cmd.name,
+                                  timeStamp: cmd.timeStamp
+                                }]);
+                              return;
+                          }
+                          eventHandler([{
+                              gameId: cmd.gameId,
+                              type: "PlaceMove",
+                              user: cmd.user,
+                              name: cmd.name,
+                              timeStamp: cmd.timeStamp,
+                              placement: cmd.placement
+                          }]);
                     }
                 };
 
                 if(!cmdHandlers[cmd.type]){
+                    console.log(cmd)
                     throw new Error("I do not handle command of type " + cmd.type)
                 }
                 cmdHandlers[cmd.type](cmd);
@@ -61,4 +75,3 @@ module.exports = function(injected){
         }
     }
 };
-

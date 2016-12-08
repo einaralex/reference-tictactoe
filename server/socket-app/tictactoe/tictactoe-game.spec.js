@@ -46,9 +46,7 @@ var playerTwoJoinedGame = {
   side: 'O'
 };
 
-
 describe('create game command', function() {
-
 
     var given, when, then;
 
@@ -152,12 +150,29 @@ describe('join game command', function () {
           }
       ];
     });
-    it('test', function () {
+    it('should emit a GameNotFullCantPlaceMove event when trying to place a move without a second player', function () {
 
-      given = [playerOneJoinedGame,playerTwoJoinedGame];
-      when = [];
+      given = [playerOneCreatesGame];
+      when =
+      {
+          type: "PlaceMove",
+          user: {
+              userName: "Player1"
+          },
+          name: "TheFirstGame",
+          timeStamp: "2014-12-02T11:29:29",
+          json: { side: 'X',
+          placement: "4" }
+      };
 
-      then = [
+      then = [{
+          type: "GameNotFullCantPlaceMove",
+          user: {
+              userName: "Player1"
+          },
+          name: "TheFirstGame",
+          timeStamp: "2014-12-02T11:29:29"
+      }
       ];
     });
 });
