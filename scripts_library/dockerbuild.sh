@@ -19,10 +19,10 @@ if [[ $rc != 0 ]] ; then
 fi
 
 echo Writing git informations to files
-#cat > ./build/githash.txt << _EOF_
-#$GIT_COMMIT
-#_EOF_
+# Write the git commit sha to GIT_COMMIT in .env file
+./scripts_library/envfile.sh
 
+# Write git url and git commit to a viewable version document
 cat > ./build/static/version.html << _EOF_
 <!doctype html>
 <head>
@@ -36,10 +36,8 @@ cat > ./build/static/version.html << _EOF_
 </body>
 _EOF_
 
-# Write the git commit sha to GIT_COMMIT in .env file
-./scripts_library/envfile.sh
 
-echo Building docker
+echo Building docker container
 docker build -t einaralex/tictactoe:$GIT_COMMIT .
 
 # Grab the exit code and display it - if it's not 0
