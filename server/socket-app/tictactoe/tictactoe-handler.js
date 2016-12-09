@@ -44,7 +44,6 @@ module.exports = function(injected){
                     },
                     "PlaceMove": function(cmd){
                           //if gamestate is not full, you can't place a move
-
                           if (!gameState.gameFull()){
                               eventHandler( [{
                                   gameId: cmd.gameId,
@@ -53,6 +52,16 @@ module.exports = function(injected){
                                   name: cmd.name,
                                   timeStamp: cmd.timeStamp
                                 }]);
+                              return;
+                          }
+                          if (!gameState.movePlaced()){
+                            eventHandler( [{
+                                gameId: cmd.gameId,
+                                type: "MovePlaced",
+                                user: cmd.user,
+                                name: cmd.name,
+                                timeStamp: cmd.timeStamp
+                              }]);
                               return;
                           }
                           eventHandler([{

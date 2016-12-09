@@ -161,8 +161,8 @@ describe('join game command', function () {
           },
           name: "TheFirstGame",
           timeStamp: "2014-12-02T11:29:29",
-          json: { side: 'X',
-          placement: "4" }
+          side: 'X',
+          placement: "4"
       };
 
       then = [{
@@ -174,5 +174,29 @@ describe('join game command', function () {
           timeStamp: "2014-12-02T11:29:29"
       }
       ];
+    });
+    it('should emit MovePlaced after placing a move', function () {
+
+      given = [playerOneCreatesGame, playerTwoJoinedGame]
+      when = {
+                type: "PlaceMove",
+                user: {
+                    userName: "Player1"
+                },
+                name: "TheFirstGame",
+                timeStamp: "2014-12-02T11:29:29",
+                side: 'X',
+                placement: "4"
+            };
+
+
+      then = [{
+                type: "MovePlaced",
+                user: {
+                    userName: "Player1"
+                },
+                name: "TheFirstGame",
+                timeStamp: "2014-12-02T11:29:29",
+            }];
     });
 });
