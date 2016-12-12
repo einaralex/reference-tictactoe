@@ -46,8 +46,19 @@ var playerTwoJoinedGame = {
   side: 'O'
 };
 
-var playerOnPlacesMove = {
+var playerOnePlacesMove = {
     type: "PlaceMove",
+    user: {
+        userName: "Player1"
+    },
+    name: "TheFirstGame",
+    timeStamp: "2014-12-02T11:29:29",
+    side: 'X',
+    placement: "4"
+};
+
+var playerOneMovePlaced = {
+    type: "MovePlaced",
     user: {
         userName: "Player1"
     },
@@ -164,7 +175,7 @@ describe('join game command', function () {
     it('should emit a IllegalMove event when trying to place a move without a second player', function () {
 
       given = [playerOneCreatesGame];
-      when = playerOnPlacesMove
+      when = playerOnePlacesMove
       then = [{
           type: "IllegalMove",
           user: {
@@ -178,7 +189,7 @@ describe('join game command', function () {
     it('should emit MovePlaced after placing a move', function () {
 
       given = [playerOneCreatesGame, playerTwoJoinedGame]
-      when = playerOnPlacesMove
+      when = playerOnePlacesMove
       then = [{
                 type: "MovePlaced",
                 user: {
@@ -188,14 +199,36 @@ describe('join game command', function () {
                 timeStamp: "2014-12-02T11:29:29"
             }];
     });
-    it('should emit IllegalMove when trying to place the same sign again', function () {
+    it('should emit NotYourMove when trying to place the same sign again', function () {
 
-        given = [playerOneCreatesGame, playerTwoJoinedGame, playerOnPlacesMove]
-        when = playerOnPlacesMove
+        given = [playerOneCreatesGame, playerTwoJoinedGame, playerOnePlacesMove]
+        when = playerOnePlacesMove
+        then = [{
+            type: "NotYourMove",
+            user: {
+                userName: "Player1"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29"
+        }];
+    });
+    it('should emit IllegalMove when square is already occupied', function () {
+
+        given = [playerOneCreatesGame, playerTwoJoinedGame, playerOnePlacesMove, playerOneMovePlaced]
+        when = {
+            type: "PlaceMove",
+            user: {
+                userName: "Player2"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side: 'O',
+            placement: "4"
+        };
         then = [{
             type: "IllegalMove",
             user: {
-                userName: "Player1"
+                userName: "Player2"
             },
             name: "TheFirstGame",
             timeStamp: "2014-12-02T11:29:29"

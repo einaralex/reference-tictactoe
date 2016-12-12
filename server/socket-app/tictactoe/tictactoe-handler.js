@@ -44,16 +44,29 @@ module.exports = function(injected){
                     },
                     "PlaceMove": function(cmd){
                           //if gamestate is not full, or it's not your turn, you can't place a move
-                          if (gameState.movePlaced() || !gameState.gameFull()){
-                              eventHandler( [{
-                                  gameId: cmd.gameId,
-                                  type: "IllegalMove",
-                                  user: cmd.user,
-                                  name: cmd.name,
-                                  timeStamp: cmd.timeStamp
-                                }]);
-                              return;
-                          }
+                        if (gameState.slotOccupied() || !gameState.gameFull()){
+                            eventHandler( [{
+                                gameId: cmd.gameId,
+                                type: "IllegalMove",
+                                user: cmd.user,
+                                name: cmd.name,
+                                timeStamp: cmd.timeStamp
+                            }]);
+                            return;
+                        }
+                        if (gameState.movePlaced()){
+                            eventHandler( [{
+                                gameId: cmd.gameId,
+                                type: "NotYourMove",
+                                user: cmd.user,
+                                name: cmd.name,
+                                timeStamp: cmd.timeStamp
+                            }]);
+                            return;
+                        }
+
+
+
 
                         eventHandler( [{
                             gameId: cmd.gameId,

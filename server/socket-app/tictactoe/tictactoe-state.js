@@ -11,6 +11,7 @@ module.exports = function (injected) {
         var gamefullIndicator = false
         var gameoverIndicator = false
         var moveplacedIndicator = false
+        var slotoccupiedIndicator = false
 
         // telur fjöldann af merkjum í listanum. t.d. x:3, o:2
         board.forEach(
@@ -37,9 +38,21 @@ module.exports = function (injected) {
           {
               if (checkTurn(sizeOfBoard) != event.side){
                     console.log("HALLO " + checkTurn(sizeOfBoard) + event.side)
+
                 }
-                board[event.placement] = event.side;
+                console.log("Board placement: " + board[event.placement])
+
+                if (board[event.placement] === undefined){
+                    board[event.placement] = event.side;
+                }
+                else {
+                    slotoccupiedIndicator = true
+                }
                 moveplacedIndicator= !moveplacedIndicator
+
+          }
+          if(event.type==="MovePlaced") {
+              //occupiedSlotIndicator = false
           }
 
 
@@ -60,6 +73,9 @@ module.exports = function (injected) {
         function movePlaced() {
             return moveplacedIndicator;
         }
+        function slotOccupied() {
+            return slotoccupiedIndicator;
+        }
 
         function checkTurn(sizeOfBoard) {
             if (sizeOfBoard%2==0) {
@@ -73,6 +89,7 @@ module.exports = function (injected) {
 
         return {
             movePlaced: movePlaced,
+            slotOccupied: slotOccupied,
             gameOver: gameOver,
             gameFull: gameFull,
             processEvents: processEvents
