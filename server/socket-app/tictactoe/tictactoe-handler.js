@@ -43,35 +43,30 @@ module.exports = function(injected){
                         }]);
                     },
                     "PlaceMove": function(cmd){
-                          //if gamestate is not full, you can't place a move
-                          if (!gameState.gameFull()){
+                          //if gamestate is not full, or it's not your turn, you can't place a move
+                          if (gameState.movePlaced() || !gameState.gameFull()){
                               eventHandler( [{
                                   gameId: cmd.gameId,
-                                  type: "GameNotFullCantPlaceMove",
+                                  type: "IllegalMove",
                                   user: cmd.user,
                                   name: cmd.name,
                                   timeStamp: cmd.timeStamp
                                 }]);
                               return;
                           }
-                          if (!gameState.movePlaced()){
-                            eventHandler( [{
-                                gameId: cmd.gameId,
-                                type: "MovePlaced",
-                                user: cmd.user,
-                                name: cmd.name,
-                                timeStamp: cmd.timeStamp
-                              }]);
-                              return;
-                          }
-                          eventHandler([{
-                              gameId: cmd.gameId,
-                              type: "PlaceMove",
-                              user: cmd.user,
-                              name: cmd.name,
-                              timeStamp: cmd.timeStamp,
-                              placement: cmd.placement
-                          }]);
+
+                        eventHandler( [{
+                            gameId: cmd.gameId,
+                            type: "MovePlaced",
+                            user: cmd.user,
+                            name: cmd.name,
+                            timeStamp: cmd.timeStamp
+                        }]);
+
+
+
+
+
                     }
                 };
 

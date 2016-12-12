@@ -12,6 +12,7 @@ module.exports = function (injected) {
         var gameoverIndicator = false
         var moveplacedIndicator = false
 
+        // telur fjöldann af merkjum í listanum. t.d. x:3, o:2
         board.forEach(
           function(x) {
             countSigns[x] = (countSigns[x] || 0)+1;
@@ -27,21 +28,25 @@ module.exports = function (injected) {
         console.log(countSigns)
 
         function processEvent(event) {
-          if(event.type=="GameJoined"){
+          if(event.type==="GameJoined"){
             gamefullIndicator=true
           }
-          if(event.type=="PlaceMove")
+
+          console.log(event.type)
+          if(event.type==="PlaceMove")
           {
-            if (checkTurn(sizeOfBoard) != event.side){
-              console.log("HALLO " + checkTurn(sizeOfBoard) + event.side)
-            }
-            board[event.placement] = event.side;
-            //moveplacedIndicator= true
+              console.log(moveplacedIndicator)
+              console.log("EKKERT AD FREATTA?")
+              if (checkTurn(sizeOfBoard) != event.side){
+                    console.log("HALLO " + checkTurn(sizeOfBoard) + event.side)
+                }
+                board[event.placement] = event.side;
+                moveplacedIndicator= !moveplacedIndicator
+
           }
-          /*if(event.type=="GameOver"){
-            gameoverIndicator=true
-          }*/
-          console.debug("event", event)
+
+
+          //console.debug("event", event)
         }
 
         function processEvents(history) {
@@ -56,7 +61,7 @@ module.exports = function (injected) {
         }
 
         function movePlaced() {
-          return moveplacedIndicator;
+            return moveplacedIndicator;
         }
 
         function checkTurn(sizeOfBoard) {

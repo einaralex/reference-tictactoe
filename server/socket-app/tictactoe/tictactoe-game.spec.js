@@ -46,6 +46,17 @@ var playerTwoJoinedGame = {
   side: 'O'
 };
 
+var playerOnPlacesMove = {
+    type: "PlaceMove",
+    user: {
+        userName: "Player1"
+    },
+    name: "TheFirstGame",
+    timeStamp: "2014-12-02T11:29:29",
+    side: 'X',
+    placement: "4"
+};
+
 describe('create game command', function() {
 
     var given, when, then;
@@ -150,23 +161,12 @@ describe('join game command', function () {
           }
       ];
     });
-    it('should emit a GameNotFullCantPlaceMove event when trying to place a move without a second player', function () {
+    it('should emit a IllegalMove event when trying to place a move without a second player', function () {
 
       given = [playerOneCreatesGame];
-      when =
-      {
-          type: "PlaceMove",
-          user: {
-              userName: "Player1"
-          },
-          name: "TheFirstGame",
-          timeStamp: "2014-12-02T11:29:29",
-          side: 'X',
-          placement: "4"
-      };
-
+      when = playerOnPlacesMove
       then = [{
-          type: "GameNotFullCantPlaceMove",
+          type: "IllegalMove",
           user: {
               userName: "Player1"
           },
@@ -178,25 +178,28 @@ describe('join game command', function () {
     it('should emit MovePlaced after placing a move', function () {
 
       given = [playerOneCreatesGame, playerTwoJoinedGame]
-      when = {
-                type: "PlaceMove",
-                user: {
-                    userName: "Player1"
-                },
-                name: "TheFirstGame",
-                timeStamp: "2014-12-02T11:29:29",
-                side: 'X',
-                placement: "4"
-            };
-
-
+      when = playerOnPlacesMove
       then = [{
                 type: "MovePlaced",
                 user: {
                     userName: "Player1"
                 },
                 name: "TheFirstGame",
-                timeStamp: "2014-12-02T11:29:29",
+                timeStamp: "2014-12-02T11:29:29"
             }];
     });
+    it('should emit IllegalMove when trying to place the same sign again', function () {
+
+        given = [playerOneCreatesGame, playerTwoJoinedGame, playerOnPlacesMove]
+        when = playerOnPlacesMove
+        then = [{
+            type: "IllegalMove",
+            user: {
+                userName: "Player1"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29"
+        }];
+    });
+
 });

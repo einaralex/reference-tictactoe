@@ -11,7 +11,7 @@ export PROJECT_NAME := tictactoe
 # exports my user name
 export USERNAME := einaralex
 
-#e xports a string
+# exports a string
 ifndef IMAGE_TAG
 	IMAGE_TAG := ${USERNAME}/${PROJECT_NAME}:${GIT_COMMIT}
 endif
@@ -36,12 +36,18 @@ compose dockercompose  composedocker:
 	docker-compose up -d
 
 # test server
-test:
+tests:
 	npm run test
+
+testsonce:
+	npm run testonce
 
 # test client
 testc:
 	cd client; npm run test
+
+testconce:
+	cd client; npm run testonce
 
 apitest:
 	npm run apitest
