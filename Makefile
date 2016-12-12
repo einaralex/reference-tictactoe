@@ -36,10 +36,10 @@ compose dockercompose  composedocker:
 	docker-compose up -d
 
 # test server
-tests:
+test tests:
 	npm run test
 
-testsonce:
+testonce testsonce:
 	npm run testonce
 
 # test client

@@ -35,14 +35,11 @@ module.exports = function (injected) {
           console.log(event.type)
           if(event.type==="PlaceMove")
           {
-              console.log(moveplacedIndicator)
-              console.log("EKKERT AD FREATTA?")
               if (checkTurn(sizeOfBoard) != event.side){
                     console.log("HALLO " + checkTurn(sizeOfBoard) + event.side)
                 }
                 board[event.placement] = event.side;
                 moveplacedIndicator= !moveplacedIndicator
-
           }
 
 

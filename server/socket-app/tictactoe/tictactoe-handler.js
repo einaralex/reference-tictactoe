@@ -62,11 +62,6 @@ module.exports = function(injected){
                             name: cmd.name,
                             timeStamp: cmd.timeStamp
                         }]);
-
-
-
-
-
                     }
                 };
 
