@@ -43,8 +43,8 @@ module.exports = function(injected){
                         }]);
                     },
                     "PlaceMove": function(cmd){
-                          //if gamestate is not full, or it's not your turn, you can't place a move
 
+                        //if gamestate is not full, or it's not your turn, you can't place a move
                         if (gameState.slotOccupied(cmd.placement) || !gameState.gameFull()){
                             eventHandler( [{
                                 gameId: cmd.gameId,
@@ -58,6 +58,7 @@ module.exports = function(injected){
                             return;
                         }
 
+                        //checks if this side is the same as in last move
                         if (gameState.checkTurn(cmd.side)){
                             eventHandler( [{
                                 gameId: cmd.gameId,
@@ -81,7 +82,7 @@ module.exports = function(injected){
                             placement: cmd.placement
                         }];
 
-                        gameState.processEvents(events)
+                        gameState.processEvents(events);
 
                         if (gameState.gameWon()){
                             eventHandler( [{
@@ -115,7 +116,7 @@ module.exports = function(injected){
                 };
 
                 if(!cmdHandlers[cmd.type]){
-                    console.log(cmd)
+                    console.log(cmd);
                     throw new Error("I do not handle command of type " + cmd.type)
                 }
                 cmdHandlers[cmd.type](cmd);

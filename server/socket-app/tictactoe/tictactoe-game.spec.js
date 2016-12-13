@@ -8,7 +8,8 @@ var tictactoe = require('./tictactoe-handler')(inject({
 }));
 
 var playerOneCreatesGame = {
-    type: "GameCreated",
+    gameId:"123987",
+    type: "CreateGame",
     user: {
         userName: "Player1"
     },
@@ -16,60 +17,31 @@ var playerOneCreatesGame = {
     timeStamp: "2014-12-02T11:29:29"
 };
 
-var playerOneJoinedGame = {
-    type: "GameJoined",
+var playerTwoJoinsGame = {
+    gameId:"123987",
+    type: "JoinGame",
     user: {
-        userName: "Player1"
+        userName: "Player2"
     },
     name: "TheFirstGame",
-    timeStamp: "2014-12-02T11:29:29",
-    side: "X"
-};
-
-var playerTwoJoinsGame = {
-  type: "JoinGame",
-  user: {
-      userName: "Player2"
-  },
-  name: "TheFirstGame",
-  timeStamp: "2014-12-02T11:30:29",
-  side: "O"
+    timeStamp: "2014-12-02T11:30:29",
+    side: "O"
 };
 
 var playerTwoJoinedGame = {
-  type: "GameJoined",
-  user: {
-      userName: "Player2"
-  },
-  name: "TheFirstGame",
-  timeStamp: "2014-12-02T11:30:29",
-  side: "O"
-};
-
-var playerOnePlacesMove = {
-    type: "PlaceMove",
+    gameId:"123987",
+    type: "GameJoined",
     user: {
-        userName: "Player1"
+        userName: "Player2"
     },
     name: "TheFirstGame",
-    timeStamp: "2014-12-02T11:29:29",
-    side: "X",
-    placement: "4"
-};
-
-var playerOneMovePlaced = {
-    type: "MovePlaced",
-    user: {
-        userName: "Player1"
-    },
-    name: "TheFirstGame",
-    timeStamp: "2014-12-02T11:29:29",
-    side: "X",
-    placement: "4"
+    timeStamp: "2014-12-02T11:30:29",
+    side: "O"
 };
 
 function playerPlaceMove(thisUser, thisSide, thisPlacement) {
     return {
+        gameId:"123987",
         type: "PlaceMove",
         user: {
             userName: thisUser
@@ -82,7 +54,8 @@ function playerPlaceMove(thisUser, thisSide, thisPlacement) {
 }
 
 function playerMovePlaced(thisUser, thisSide, thisPlacement) {
-     return {
+    return {
+        gameId:"123987",
         type: "MovePlaced",
         user: {
             userName: thisUser
@@ -96,6 +69,7 @@ function playerMovePlaced(thisUser, thisSide, thisPlacement) {
 
 function placeMove(thisUser, thisSide, thisPlacement) {
     return {
+        gameId:"123987",
         type: "PlaceMove",
         user: {
             userName: thisUser
@@ -105,16 +79,17 @@ function placeMove(thisUser, thisSide, thisPlacement) {
         side: thisSide,
         placement: thisPlacement
     },
-    {
-        type: "MovePlaced",
-        user: {
-            userName: thisUser
-        },
-        name: "TheFirstGame",
-        timeStamp: "2014-12-02T11:29:29",
-        side: thisSide,
-        placement: thisPlacement
-    }
+        {
+            gameId:"123987",
+            type: "MovePlaced",
+            user: {
+                userName: thisUser
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side: thisSide,
+            placement: thisPlacement
+        }
 
 }
 
@@ -139,27 +114,17 @@ describe('create game command', function() {
     it('should emit game created event', function(){
 
         given = [];
-        when =
-        {
-            id:"123987",
-            type: "CreateGame",
+        when = playerOneCreatesGame;
+        then = [{
+            gameId:"123987",
+            type: "GameCreated",
             user: {
-                userName: "TheGuy"
+                userName: "Player1"
             },
             name: "TheFirstGame",
-            timeStamp: "2014-12-02T11:29:29"
-        };
-        then = [
-            {
-                type: "GameCreated",
-                user: {
-                    userName: "TheGuy"
-                },
-                name: "TheFirstGame",
-                timeStamp: "2014-12-02T11:29:29",
-                side:'X'
-            }
-        ];
+            timeStamp: "2014-12-02T11:29:29",
+            side:'X'
+        }];
 
     })
 });
@@ -185,80 +150,101 @@ describe('join game command', function () {
     it('should emit game joined event', function () {
 
         given = [playerOneCreatesGame];
-        when = playerTwoJoinsGame
-        then = [
-            {
-                type: "GameJoined",
-                user: {
-                    userName: "Player2"
-                },
-                name: "TheFirstGame",
-                timeStamp: "2014-12-02T11:30:29",
-                side:'O'
-            }
-        ];
-
+        when = playerTwoJoinsGame;
+        then = [{
+            gameId:"123987",
+            type: "GameJoined",
+            user: {
+                userName: "Player2"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:30:29",
+            side: 'O'
+        }];
     });
+
 
     it('should emit FullGameJoinAttempted event when game full', function () {
 
-      given = [playerOneCreatesGame, playerTwoJoinedGame];
-      when =
-      {
-          type: "JoinGame",
-          user: {
-              userName: "Player3"
-          },
-          name: "TheFirstGame",
-          timeStamp: "2014-12-02T11:30:50"
-      };
-      then = [
-          {
-              type: "FullGameJoinAttempted",
-              user: {
-                  userName: "Player3"
-              },
-              name: "TheFirstGame",
-              timeStamp: "2014-12-02T11:30:50"
-          }
-      ];
+        given = [playerOneCreatesGame, playerTwoJoinedGame];
+        when = {
+            gameId:"123987",
+            type: "JoinGame",
+            user: {
+                userName: "Player3"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:30:50"
+        };
+        then = [{
+            gameId:"123987",
+            type: "FullGameJoinAttempted",
+            user: {
+                userName: "Player3"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:30:50"
+        }];
     });
+});
+
+describe('place move command', function () {
+
+    var given, when, then;
+
+    beforeEach(function () {
+        given = undefined;
+        when = undefined;
+        then = undefined;
+    });
+
+    afterEach(function () {
+        tictactoe(given).executeCommand(when, function (actualEvents) {
+            should(JSON.stringify(actualEvents)).be.exactly(JSON.stringify(then));
+        });
+    });
+
+
+
     it('should emit a IllegalMove event when trying to place a move without a second player', function () {
 
-      given = [playerOneCreatesGame];
-      when = playerOnePlacesMove
-      then = [{
-          type: "IllegalMove",
-          user: {
-              userName: "Player1"
-          },
-          name: "TheFirstGame",
-          timeStamp: "2014-12-02T11:29:29",
-          side: 'X',
-          placement: '4'
-      }
-      ];
+        given = [playerOneCreatesGame];
+        when = playerPlaceMove("Player1", "X", "4");
+        then = [{
+            gameId:"123987",
+            type: "IllegalMove",
+            user: {
+                userName: "Player1"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side: 'X',
+            placement: '4'
+        }
+        ];
     });
-    it('should emit MovePlaced after placing a move', function () {
+    it('should emit MovePlaced on first game move', function () {
 
-      given = [playerOneCreatesGame, playerTwoJoinedGame];
-      when = playerOnePlacesMove;
-      then = [{
-                type: "MovePlaced",
-                user: {
-                    userName: "Player1"
-                },
-                name: "TheFirstGame",
-                timeStamp: "2014-12-02T11:29:29",
-                side: "X",
-                placement: "4"
-            }];
+        given = [playerOneCreatesGame, playerTwoJoinedGame];
+        when = playerPlaceMove("Player1", "X", "3");
+        then = [{
+            gameId:"123987",
+            type: "MovePlaced",
+            user: {
+                userName: "Player1"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side: "X",
+            placement: "3"
+        }];
     });
-    it('should emit NotYourMove when trying to place the same sign again', function () {
+    it('should emit NotYourMove if attempting to make move out of turn', function () {
 
         given = [playerOneCreatesGame, playerTwoJoinedGame, placeMove("Player1", "X", "3")];
         when = playerPlaceMove("Player1", "X", "4");
         then = [{
+            gameId:"123987",
             type: "NotYourMove",
             user: {
                 userName: "Player1"
@@ -274,6 +260,7 @@ describe('join game command', function () {
         given = [playerOneCreatesGame, playerTwoJoinedGame, playerMovePlaced("Player1", "X", "4")]
         when =  playerPlaceMove("Player2", "O", "4");
         then = [{
+            gameId:"123987",
             type: "IllegalMove",
             user: {
                 userName: "Player2"
@@ -285,7 +272,7 @@ describe('join game command', function () {
         }];
     });
 
-    it('should emit GameWon when player gets three signs in a row', function () {
+    it('should emit game won on', function () {
 
         given = [playerOneCreatesGame,
             playerTwoJoinedGame,
@@ -296,6 +283,7 @@ describe('join game command', function () {
         ];
         when = playerPlaceMove("Player1", "X", "4")
         then = [{
+            gameId:"123987",
             type: "GameWon",
             user: {
                 userName: "Player1"
@@ -307,7 +295,7 @@ describe('join game command', function () {
         }];
     });
 
-    it('should emit GameDraw when player gets three signs in a row', function () {
+    it('should emit game draw when neither wins', function () {
 
         given = [playerOneCreatesGame,
             playerTwoJoinedGame,
@@ -322,6 +310,7 @@ describe('join game command', function () {
         ];
         when = playerPlaceMove("Player1", "X", "8")
         then = [{
+            gameId:"123987",
             type: "GameDraw",
             user: {
                 userName: "Player1"
@@ -331,6 +320,34 @@ describe('join game command', function () {
             side: "X",
             placement: "8"
         }];
+    });
+    it('Should not emit game draw if won on last move', function () {
+
+        given = [playerOneCreatesGame,
+            playerTwoJoinedGame,
+            placeMove("Player1", "X", "1"),
+            placeMove("Player2", "O", "2"),
+            placeMove("Player1", "X", "3"),
+            placeMove("Player2", "O", "5"),
+            placeMove("Player1", "X", "4"),
+            placeMove("Player2", "O", "7"),
+            placeMove("Player1", "X", "6"),
+            placeMove("Player2", "O", "8")
+        ];
+        when = playerPlaceMove("Player1", "X", "9");
+        then = [{
+            gameId:"123987",
+            type: "GameWon",
+            user: {
+                userName: "Player1"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side: "X",
+            placement: "9"
+        }];
+
+        expect(then[0].type).not.toBe("GameDraw")
     });
 
 });

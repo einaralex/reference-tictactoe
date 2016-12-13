@@ -16,34 +16,31 @@ module.exports = function (injected) {
 
         // telur fjöldann af merkjum í listanum. t.d. x:3, o:2
         board.forEach(
-          function(x) {
-            countSigns[x] = (countSigns[x] || 0)+1;
-          });
+            function(x) {
+                countSigns[x] = (countSigns[x] || 0)+1;
+            });
 
         console.log(countSigns)
 
         function processEvent(event) {
-          if(event.type==="GameJoined"){
-              isGameFull=true
-          }
-          //console.log(event)
-          console.log("Event type: " +  event.type + "Placement: " + event.placement);
-          console.log("Board: " + board);
-          console.log("____________________________");
+            if(event.type==="GameJoined"){
+                isGameFull=true
+            }
+            //console.log(event)
+            console.log("Event type: " +  event.type + "Placement: " + event.placement);
+            console.log("Board: " + board);
+            console.log("____________________________");
 
-          if(event.type==="MovePlaced"){
-              currentSide = event.side;
+            if(event.type==="MovePlaced"){
+                currentSide = event.side;
 
-              console.log("Board placement before insert: " + board[event.placement]);
+                //check if the picked square is occupied, if not then add the sign to the board
+                if (!slotOccupied(event.placement)){
+                    board[event.placement] = event.side;
+                }
+                console.log("Board placement after insert: " + board[event.placement] + " at " + event.placement)
 
-              //check if the picked square is occupied, if not then add the sign to the board
-              if (!slotOccupied(event.placement)){
-                  board[event.placement] = event.side;
-                  console.log("board placement set as: " + board[event.placement])
-              }
-              console.log("Board placement after insert: " + board[event.placement] + " at " + event.placement)
-
-          }
+            }
         }
 
         function processEvents(history) {
@@ -51,7 +48,7 @@ module.exports = function (injected) {
         }
 
         function gameFull() {
-          return isGameFull;
+            return isGameFull;
         }
 
         function slotOccupied(thisPlacement) {
