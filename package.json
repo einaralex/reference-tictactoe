@@ -44,6 +44,7 @@
     "migratedb": "db-migrate --config ./server/database.json --migrations-dir ./server/migrations up -e prod",
     "migratedb-dev": "db-migrate --config ./server/database.json --migrations-dir ./server/migrations up -e dev",
     "startdockerdb": "docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres",
-    "connectdockerdb": "docker run -it --rm --link postgres:postgres postgres psql -h postgres -U postgres"
+    "connectdockerdb": "docker run -it --rm --link postgres:postgres postgres psql -h postgres -U postgres",
+    "citest": "CI=true && export NODE_PATH=./src/ && react-scripts test --env=jsdom"
   }
 }
