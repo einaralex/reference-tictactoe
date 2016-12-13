@@ -82,10 +82,16 @@ module.exports = function (injected) {
 
             return false;
         }
+        function gameDraw() {
+
+
+            // counts all the non-undefined values
+            var currentSizeOfBoard = board.filter(function(i) { return i !== undefined}).length;
+
+            return currentSizeOfBoard == boardSize
+        }
 
         function checkTurn(thisSide) {
-            // counts all the non-undefined values
-            // var sizeOfBoard = board.filter(function(value) { return value !== undefined}).length;
             return currentSide == thisSide
         }
         processEvents(history);
@@ -94,6 +100,7 @@ module.exports = function (injected) {
             checkTurn: checkTurn,
             slotOccupied: slotOccupied,
             gameWon: gameWon,
+            gameDraw: gameDraw,
             gameFull: gameFull,
             processEvents: processEvents
         }

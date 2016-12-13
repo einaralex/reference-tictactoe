@@ -285,7 +285,6 @@ describe('join game command', function () {
         }];
     });
 
-    //TODO Útfæra GameWon
     it('should emit GameWon when player gets three signs in a row', function () {
 
         given = [playerOneCreatesGame,
@@ -305,6 +304,32 @@ describe('join game command', function () {
             timeStamp: "2014-12-02T11:29:29",
             side: "X",
             placement: "4"
+        }];
+    });
+
+    it('should emit GameDraw when player gets three signs in a row', function () {
+
+        given = [playerOneCreatesGame,
+            playerTwoJoinedGame,
+            placeMove("Player1", "X", "1"),
+            placeMove("Player2", "O", "2"),
+            placeMove("Player1", "X", "3"),
+            placeMove("Player2", "O", "5"),
+            placeMove("Player1", "X", "4"),
+            placeMove("Player2", "O", "7"),
+            placeMove("Player1", "X", "6"),
+            placeMove("Player2", "O", "9")
+        ];
+        when = playerPlaceMove("Player1", "X", "8")
+        then = [{
+            type: "GameDraw",
+            user: {
+                userName: "Player1"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side: "X",
+            placement: "8"
         }];
     });
 

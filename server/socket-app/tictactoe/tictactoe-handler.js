@@ -96,6 +96,19 @@ module.exports = function(injected){
                             return
                         }
 
+                        if (gameState.gameDraw()){
+                            eventHandler( [{
+                                gameId: cmd.gameId,
+                                type: "GameDraw",
+                                user: cmd.user,
+                                name: cmd.name,
+                                timeStamp: cmd.timeStamp,
+                                side: cmd.side,
+                                placement: cmd.placement
+                            }]);
+                            return
+                        }
+
 
                         eventHandler(events)
                     }
