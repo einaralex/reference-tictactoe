@@ -1,17 +1,18 @@
 var _ = require('lodash');
 
-var countSigns = {}
-var boardSize = 8
-var board = []
+
 
 module.exports = function (injected) {
 
     return function (history) {
 
-        var gamefullIndicator = false
-        var gameoverIndicator = false
-        var moveplacedIndicator = false
-        var slotoccupiedIndicator = false
+        var isGameFull = false;
+
+        var currentSide = '';
+
+        var countSigns = {};
+        var boardSize = 9;
+        var board = [];
 
         // telur fjöldann af merkjum í listanum. t.d. x:3, o:2
         board.forEach(
@@ -19,44 +20,30 @@ module.exports = function (injected) {
             countSigns[x] = (countSigns[x] || 0)+1;
           });
 
-
-        //board[1] = 'x'
-        //board[4] = 'y'
-
-        var sizeOfBoard = board.filter(function(value) { return value !== undefined}).length;
-
-
         console.log(countSigns)
 
         function processEvent(event) {
           if(event.type==="GameJoined"){
-            gamefullIndicator=true
+              isGameFull=true
           }
+          //console.log(event)
+          console.log("Event type: " +  event.type + "Placement: " + event.placement);
+          console.log("Board: " + board);
+          console.log("____________________________");
 
-          console.log(event.type)
-          if(event.type==="PlaceMove")
-          {
-              if (checkTurn(sizeOfBoard) != event.side){
-                    console.log("HALLO " + checkTurn(sizeOfBoard) + event.side)
+          if(event.type==="MovePlaced"){
+              currentSide = event.side;
 
-                }
-                console.log("Board placement: " + board[event.placement])
+              console.log("Board placement before insert: " + board[event.placement]);
 
-                if (board[event.placement] === undefined){
-                    board[event.placement] = event.side;
-                }
-                else {
-                    slotoccupiedIndicator = true
-                }
-                moveplacedIndicator= !moveplacedIndicator
+              //check if the picked square is occupied, if not then add the sign to the board
+              if (!slotOccupied(event.placement)){
+                  board[event.placement] = event.side;
+                  console.log("board placement set as: " + board[event.placement])
+              }
+              console.log("Board placement after insert: " + board[event.placement] + " at " + event.placement)
 
           }
-          if(event.type==="MovePlaced") {
-              //occupiedSlotIndicator = false
-          }
-
-
-          //console.debug("event", event)
         }
 
         function processEvents(history) {
@@ -64,33 +51,49 @@ module.exports = function (injected) {
         }
 
         function gameFull() {
-          return gamefullIndicator;
-        }
-        function gameOver() {
-          return gameoverIndicator;
+          return isGameFull;
         }
 
-        function movePlaced() {
-            return moveplacedIndicator;
-        }
-        function slotOccupied() {
-            return slotoccupiedIndicator;
+        function slotOccupied(thisPlacement) {
+            return board[thisPlacement] != undefined;
         }
 
-        function checkTurn(sizeOfBoard) {
-            if (sizeOfBoard%2==0) {
-              return 'x'
+        function gameWon() {
+
+            // Checks for winning combinations
+            for (var i = 1; i <= boardSize; i++){
+                // Horizontal
+                if (board[i] == board[i+1] && board[i] == board[i+2] && board[i] != undefined) {
+                    return true;
+                }
+                //Vertical
+                if (board[i] == board[i+3] && board[i] == board[i+6] && board[i] != undefined) {
+                    return true;
+                }
             }
-            else {
-              return 'o'
+            // Diagonal: from top left to bottom right
+            if (board[1] == board[5] && board[1] == board[9] && board[1] != undefined) {
+                return true;
             }
+            // Diagonal: from bottom left to top right
+            if (board[3] == board[5] && board[3] == board[7] && board[3] != undefined) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function checkTurn(thisSide) {
+            // counts all the non-undefined values
+            // var sizeOfBoard = board.filter(function(value) { return value !== undefined}).length;
+            return currentSide == thisSide
         }
         processEvents(history);
 
         return {
-            movePlaced: movePlaced,
+            checkTurn: checkTurn,
             slotOccupied: slotOccupied,
-            gameOver: gameOver,
+            gameWon: gameWon,
             gameFull: gameFull,
             processEvents: processEvents
         }

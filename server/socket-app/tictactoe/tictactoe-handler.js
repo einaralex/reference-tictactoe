@@ -44,37 +44,60 @@ module.exports = function(injected){
                     },
                     "PlaceMove": function(cmd){
                           //if gamestate is not full, or it's not your turn, you can't place a move
-                        if (gameState.slotOccupied() || !gameState.gameFull()){
+
+                        if (gameState.slotOccupied(cmd.placement) || !gameState.gameFull()){
                             eventHandler( [{
                                 gameId: cmd.gameId,
                                 type: "IllegalMove",
                                 user: cmd.user,
                                 name: cmd.name,
-                                timeStamp: cmd.timeStamp
+                                timeStamp: cmd.timeStamp,
+                                side: cmd.side,
+                                placement: cmd.placement
                             }]);
                             return;
                         }
-                        if (gameState.movePlaced()){
+
+                        if (gameState.checkTurn(cmd.side)){
                             eventHandler( [{
                                 gameId: cmd.gameId,
                                 type: "NotYourMove",
                                 user: cmd.user,
                                 name: cmd.name,
-                                timeStamp: cmd.timeStamp
+                                timeStamp: cmd.timeStamp,
+                                side: cmd.side,
+                                placement: cmd.placement
                             }]);
                             return;
                         }
 
-
-
-
-                        eventHandler( [{
+                        var events = [{
                             gameId: cmd.gameId,
                             type: "MovePlaced",
                             user: cmd.user,
                             name: cmd.name,
-                            timeStamp: cmd.timeStamp
-                        }]);
+                            timeStamp: cmd.timeStamp,
+                            side: cmd.side,
+                            placement: cmd.placement
+                        }];
+
+                        gameState.processEvents(events)
+
+                        if (gameState.gameWon()){
+                            eventHandler( [{
+                                gameId: cmd.gameId,
+                                type: "GameWon",
+                                user: cmd.user,
+                                name: cmd.name,
+                                timeStamp: cmd.timeStamp,
+                                side: cmd.side,
+                                placement: cmd.placement
+                            }]);
+                            return
+                        }
+
+
+                        eventHandler(events)
                     }
                 };
 

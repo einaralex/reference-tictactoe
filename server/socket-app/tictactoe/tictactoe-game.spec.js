@@ -23,7 +23,7 @@ var playerOneJoinedGame = {
     },
     name: "TheFirstGame",
     timeStamp: "2014-12-02T11:29:29",
-    side: 'X'
+    side: "X"
 };
 
 var playerTwoJoinsGame = {
@@ -33,7 +33,7 @@ var playerTwoJoinsGame = {
   },
   name: "TheFirstGame",
   timeStamp: "2014-12-02T11:30:29",
-  side: 'O'
+  side: "O"
 };
 
 var playerTwoJoinedGame = {
@@ -43,7 +43,7 @@ var playerTwoJoinedGame = {
   },
   name: "TheFirstGame",
   timeStamp: "2014-12-02T11:30:29",
-  side: 'O'
+  side: "O"
 };
 
 var playerOnePlacesMove = {
@@ -53,7 +53,7 @@ var playerOnePlacesMove = {
     },
     name: "TheFirstGame",
     timeStamp: "2014-12-02T11:29:29",
-    side: 'X',
+    side: "X",
     placement: "4"
 };
 
@@ -64,9 +64,60 @@ var playerOneMovePlaced = {
     },
     name: "TheFirstGame",
     timeStamp: "2014-12-02T11:29:29",
-    side: 'X',
+    side: "X",
     placement: "4"
 };
+
+function playerPlaceMove(thisUser, thisSide, thisPlacement) {
+    return {
+        type: "PlaceMove",
+        user: {
+            userName: thisUser
+        },
+        name: "TheFirstGame",
+        timeStamp: "2014-12-02T11:29:29",
+        side: thisSide,
+        placement: thisPlacement
+    }
+}
+
+function playerMovePlaced(thisUser, thisSide, thisPlacement) {
+     return {
+        type: "MovePlaced",
+        user: {
+            userName: thisUser
+        },
+        name: "TheFirstGame",
+        timeStamp: "2014-12-02T11:29:29",
+        side: thisSide,
+        placement: thisPlacement
+    }
+}
+
+function placeMove(thisUser, thisSide, thisPlacement) {
+    return {
+        type: "PlaceMove",
+        user: {
+            userName: thisUser
+        },
+        name: "TheFirstGame",
+        timeStamp: "2014-12-02T11:29:29",
+        side: thisSide,
+        placement: thisPlacement
+    },
+    {
+        type: "MovePlaced",
+        user: {
+            userName: thisUser
+        },
+        name: "TheFirstGame",
+        timeStamp: "2014-12-02T11:29:29",
+        side: thisSide,
+        placement: thisPlacement
+    }
+
+}
+
 
 describe('create game command', function() {
 
@@ -182,56 +233,78 @@ describe('join game command', function () {
               userName: "Player1"
           },
           name: "TheFirstGame",
-          timeStamp: "2014-12-02T11:29:29"
+          timeStamp: "2014-12-02T11:29:29",
+          side: 'X',
+          placement: '4'
       }
       ];
     });
     it('should emit MovePlaced after placing a move', function () {
 
-      given = [playerOneCreatesGame, playerTwoJoinedGame]
-      when = playerOnePlacesMove
+      given = [playerOneCreatesGame, playerTwoJoinedGame];
+      when = playerOnePlacesMove;
       then = [{
                 type: "MovePlaced",
                 user: {
                     userName: "Player1"
                 },
                 name: "TheFirstGame",
-                timeStamp: "2014-12-02T11:29:29"
+                timeStamp: "2014-12-02T11:29:29",
+                side: "X",
+                placement: "4"
             }];
     });
     it('should emit NotYourMove when trying to place the same sign again', function () {
 
-        given = [playerOneCreatesGame, playerTwoJoinedGame, playerOnePlacesMove]
-        when = playerOnePlacesMove
+        given = [playerOneCreatesGame, playerTwoJoinedGame, placeMove("Player1", "X", "3")];
+        when = playerPlaceMove("Player1", "X", "4");
         then = [{
             type: "NotYourMove",
             user: {
                 userName: "Player1"
             },
             name: "TheFirstGame",
-            timeStamp: "2014-12-02T11:29:29"
+            timeStamp: "2014-12-02T11:29:29",
+            side: "X",
+            placement: "4"
         }];
     });
     it('should emit IllegalMove when square is already occupied', function () {
 
-        given = [playerOneCreatesGame, playerTwoJoinedGame, playerOnePlacesMove, playerOneMovePlaced]
-        when = {
-            type: "PlaceMove",
-            user: {
-                userName: "Player2"
-            },
-            name: "TheFirstGame",
-            timeStamp: "2014-12-02T11:29:29",
-            side: 'O',
-            placement: "4"
-        };
+        given = [playerOneCreatesGame, playerTwoJoinedGame, playerMovePlaced("Player1", "X", "4")]
+        when =  playerPlaceMove("Player2", "O", "4");
         then = [{
             type: "IllegalMove",
             user: {
                 userName: "Player2"
             },
             name: "TheFirstGame",
-            timeStamp: "2014-12-02T11:29:29"
+            timeStamp: "2014-12-02T11:29:29",
+            side: "O",
+            placement: "4"
+        }];
+    });
+
+    //TODO Útfæra GameWon
+    it('should emit GameWon when player gets three signs in a row', function () {
+
+        given = [playerOneCreatesGame,
+            playerTwoJoinedGame,
+            placeMove("Player1", "X", "7"),
+            placeMove("Player2", "O", "3"),
+            placeMove("Player1", "X", "1"),
+            placeMove("Player2", "O", "5")
+        ];
+        when = playerPlaceMove("Player1", "X", "4")
+        then = [{
+            type: "GameWon",
+            user: {
+                userName: "Player1"
+            },
+            name: "TheFirstGame",
+            timeStamp: "2014-12-02T11:29:29",
+            side: "X",
+            placement: "4"
         }];
     });
 
