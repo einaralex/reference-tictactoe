@@ -281,7 +281,7 @@ describe('place move command', function () {
             placeMove("Player1", "X", "1"),
             placeMove("Player2", "O", "5")
         ];
-        when = playerPlaceMove("Player1", "X", "4")
+        when = playerPlaceMove("Player1", "X", "4");
         then = [{
             gameId:"123987",
             type: "GameWon",
@@ -308,7 +308,7 @@ describe('place move command', function () {
             placeMove("Player1", "X", "6"),
             placeMove("Player2", "O", "9")
         ];
-        when = playerPlaceMove("Player1", "X", "8")
+        when = playerPlaceMove("Player1", "X", "8");
         then = [{
             gameId:"123987",
             type: "GameDraw",
