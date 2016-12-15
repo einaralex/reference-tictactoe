@@ -21,12 +21,6 @@ exports.up = function(db,callback) {
     json: 'string'
   }, callback);};
 
-exports.up = function (db, callback) {
-    db.addColumn('eventlog', {
-      aggregate_id: { type: 'int'}
-    }, callback);
-  };
-
 exports.down = function(db) {
   db.dropTable('eventlog', callback);
 };
