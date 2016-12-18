@@ -14,6 +14,7 @@ function routingContext(injected){
 
     const environment = injected('env');
     var socketURI;
+    console.log(environment + "ENV")
     if(environment==='development' || environment==='test'){
         socketURI='http://localhost:8080'
     } else {

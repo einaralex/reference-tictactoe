@@ -1,20 +1,20 @@
 {
-  "dev": {
+  "production": {
     "driver": "pg",
     "user": "postgres",
     "password": "mysecretpassword",
-    "host": "localhost",
+    "host": "postgres",
     "database": "postgres",
     "schema": "postgres",
     "port": 5432,
     "max": 10,
     "idleTimeoutMillis": 30000
   },
-  "prod": {
+  "dev": {
     "driver": "pg",
     "user": "postgres",
     "password": "mysecretpassword",
-    "host": "postgres",
+    "host": "localhost",
     "database": "postgres",
     "schema": "postgres",
     "port": 5432,

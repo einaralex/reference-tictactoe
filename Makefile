@@ -18,6 +18,8 @@ endif
 
 #docker-test:
 	#add '--net host' if you want to connect to redis container runnin in another container on host or use docker compose with the ' command: 'npm test' '
+.PHONY: apitest
+
 
 # build docker
 build:
@@ -26,6 +28,12 @@ build:
 # run docker
 run:
 	docker run -p "80:3000" -d ${IMAGE_TAG}
+
+runpg:
+	docker run -p "5432:5432" --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+
+gitcommit:
+	echo ${GIT_COMMIT}
 
 # stop all images and containers
 stop:
