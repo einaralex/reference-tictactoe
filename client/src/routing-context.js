@@ -15,10 +15,10 @@ function routingContext(injected){
     const environment = injected('env');
     var socketURI;
     console.log(environment + " ENV")
-    if(environment==='production'){
+    if(environment==='development' || environment=='tst'){
         socketURI='http://52.214.66.118'
     } else {
-        socketURI='http://localhost:80'
+        socketURI='/'
     }
 
     const io = injected('io');

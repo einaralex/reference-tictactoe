@@ -19,8 +19,8 @@ module.exports=function(injected){
         connectCount++;
         const me = {
             cleanDatabase:()=>{
-                var cmdId = generateUUID();
-                routingContext.commandRouter.routeMessage({id:cmdId, type:"cleanDatabase"});
+                var cmdId = commandId++;
+                routingContext.commandRouter.routeMessage({commandId:cmdId, type:"cleanDatabase"});
                 return me;
 
             },

@@ -29,7 +29,7 @@ module.exports=function(injected){
                 return me;
             },
             sendChatMessage:(message)=>{
-                var cmdId = generateUUID();
+                var cmdId = commandId++;
                 routingContext.commandRouter.routeMessage({commandId:cmdId, type:"chatCommand", message });
                 return me;
             },
@@ -44,7 +44,7 @@ module.exports=function(injected){
                 return me;
             },
             cleanDatabase:()=>{
-                var cmdId = generateUUID();
+                var cmdId = commandId++;
                 routingContext.commandRouter.routeMessage({commandId:cmdId, type:"cleanDatabase"});
                 return me;
 
@@ -67,7 +67,7 @@ module.exports=function(injected){
                 return me;
             },
             createGame:()=>{
-              var cmdId = generateUUID();
+              var cmdId = commandId++;
               var gId = generateUUID();
               currentGameId = gId
               routingContext.commandRouter.routeMessage({commandId:cmdId, type:"CreateGame", gameId:gId});
@@ -85,7 +85,7 @@ module.exports=function(injected){
               return me;
             },
             joinGame:(gId)=>{
-              var cmdId = generateUUID();
+              var cmdId = commandId++;
               routingContext.commandRouter.routeMessage({commandId:cmdId, type:"JoinGame", gameId:gId});
               return me;
             },
@@ -100,7 +100,6 @@ module.exports=function(injected){
             expectMoveMade:()=>{
               waitingFor.push("expectMoveMade");
               routingContext.eventRouter.on('MovePlaced', function(movePlaced){
-                console.log("ASLDJSLKADJKLSA")
                 //expect(movePlaced.gameId).toBe(currentGameId);
                   waitingFor.pop();
               });
@@ -110,7 +109,7 @@ module.exports=function(injected){
             // Þetta virkar ekki því þetta stoppar alltaf hér og ég hef enga hugmynd afhverju,
             // fæ alltaf :  Timeout - Async callback was not invoked within timeout specified by jasmine.DEFAULT_TIMEOUT_INTERVAL.
             placeMove:(p)=>{
-               var cmdId = generateUUID();
+               var cmdId = commandId++;
                console.log(currentGameId)
                routingContext.commandRouter.routeMessage({commandId: cmdId, gameId:currentGame.gameId, type: "PlaceMove", side:currentGame.side, placement: p});
                return me;
