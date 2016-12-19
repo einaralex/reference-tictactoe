@@ -14,11 +14,11 @@ function routingContext(injected){
 
     const environment = injected('env');
     var socketURI;
-    console.log(environment + "ENV")
-    if(environment==='development' || environment==='test'){
-        socketURI='http://localhost:8080'
+    console.log(environment + " ENV")
+    if(environment==='production'){
+        socketURI='http://52.214.66.118'
     } else {
-        socketURI='/'
+        socketURI='http://localhost:80'
     }
 
     const io = injected('io');

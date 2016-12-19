@@ -8,9 +8,9 @@
     "schema": "postgres",
     "port": 5432,
     "max": 10,
-    "idleTimeoutMillis": 30000
+    "idleTimeoutMillis": 20000
   },
-  "dev": {
+  "development": {
     "driver": "pg",
     "user": "postgres",
     "password": "mysecretpassword",
@@ -19,6 +19,6 @@
     "schema": "postgres",
     "port": 5432,
     "max": 10,
-    "idleTimeoutMillis": 30000
+    "idleTimeoutMillis": 20000
   }
 }

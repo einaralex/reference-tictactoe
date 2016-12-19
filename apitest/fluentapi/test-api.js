@@ -3,6 +3,7 @@ module.exports=function(injected){
 
     const io = injected('io');
     const RoutingContext = injected('RoutingContext');
+    const generateUUID = require('../../client/src/common/framework/uuid');
 
     var connectCount =0;
 
@@ -18,8 +19,8 @@ module.exports=function(injected){
         connectCount++;
         const me = {
             cleanDatabase:()=>{
-                var cmdId = commandId++;
-                routingContext.commandRouter.routeMessage({commandId:cmdId, type:"cleanDatabase"});
+                var cmdId = generateUUID();
+                routingContext.commandRouter.routeMessage({id:cmdId, type:"cleanDatabase"});
                 return me;
 
             },
@@ -45,7 +46,6 @@ module.exports=function(injected){
             disconnect:function(){
                 routingContext.socket.disconnect();
             }
-
         };
         return me;
     }

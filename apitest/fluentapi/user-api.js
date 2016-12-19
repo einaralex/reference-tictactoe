@@ -9,6 +9,8 @@ module.exports=function(injected){
     function userAPI(){
         var waitingFor=[];
         var commandId=0;
+        var currentGame;
+        var currentGameId
 
         var routingContext = RoutingContext(inject({
             io,
@@ -20,6 +22,7 @@ module.exports=function(injected){
             expectUserAck:(cb)=>{
                 waitingFor.push("expectUserAck");
                 routingContext.socket.on('userAcknowledged', function(ackMessage){
+
                     expect(ackMessage.clientId).not.toBeUndefined();
                     waitingFor.pop();
                 });
@@ -41,7 +44,7 @@ module.exports=function(injected){
                 return me;
             },
             cleanDatabase:()=>{
-                var cmdId = commandId++;
+                var cmdId = generateUUID();
                 routingContext.commandRouter.routeMessage({commandId:cmdId, type:"cleanDatabase"});
                 return me;
 
@@ -53,6 +56,71 @@ module.exports=function(injected){
                 });
                 return me;
 
+            },
+            expectGameCreated:()=>{
+                waitingFor.push("expectGameCreated");
+                routingContext.eventRouter.on('GameCreated', function(gameCreated){
+                    expect(gameCreated.gameId).not.toBeUndefined();
+                    currentGame = gameCreated
+                    waitingFor.pop();
+                });
+                return me;
+            },
+            createGame:()=>{
+              var cmdId = generateUUID();
+              var gId = generateUUID();
+              currentGameId = gId
+              routingContext.commandRouter.routeMessage({commandId:cmdId, type:"CreateGame", gameId:gId});
+
+              return me;
+            },
+            expectGameJoined:()=>{
+              waitingFor.push("expectGameJoined");
+              routingContext.eventRouter.on('GameJoined', function(gameJoined){
+                console.log(gameJoined.gameId)
+                console.log(currentGameId)
+                expect(gameJoined.gameId).not.toBeUndefined;
+                  waitingFor.pop();
+              });
+              return me;
+            },
+            joinGame:(gId)=>{
+              var cmdId = generateUUID();
+              routingContext.commandRouter.routeMessage({commandId:cmdId, type:"JoinGame", gameId:gId});
+              return me;
+            },
+            getGame:()=>{
+              currentGameId = currentGame.gameId;
+              me.gameId = currentGameId;
+              return me;
+            },
+
+            // Fer aldrei hingað
+
+            expectMoveMade:()=>{
+              waitingFor.push("expectMoveMade");
+              routingContext.eventRouter.on('MovePlaced', function(movePlaced){
+                console.log("ASLDJSLKADJKLSA")
+                //expect(movePlaced.gameId).toBe(currentGameId);
+                  waitingFor.pop();
+              });
+              return me;
+            },
+
+            // Þetta virkar ekki því þetta stoppar alltaf hér og ég hef enga hugmynd afhverju,
+            // fæ alltaf :  Timeout - Async callback was not invoked within timeout specified by jasmine.DEFAULT_TIMEOUT_INTERVAL.
+            placeMove:(p)=>{
+               var cmdId = generateUUID();
+               console.log(currentGameId)
+               routingContext.commandRouter.routeMessage({commandId: cmdId, gameId:currentGame.gameId, type: "PlaceMove", side:currentGame.side, placement: p});
+               return me;
+            },
+            expectGameWon:()=>{
+              waitingFor.push("expectGameWon");
+              routingContext.eventRouter.on('GameWon', function(gameOver){
+                  waitingFor.pop();
+              });
+              return me;
             },
             then:(whenDoneWaiting)=>{
                 function waitLonger(){
@@ -68,6 +136,7 @@ module.exports=function(injected){
             disconnect:function(){
                 routingContext.socket.disconnect();
             }
+
 
         };
         return me;

@@ -19,7 +19,7 @@ endif
 #docker-test:
 	#add '--net host' if you want to connect to redis container runnin in another container on host or use docker compose with the ' command: 'npm test' '
 .PHONY: apitest
-
+.PHONY: build
 
 # build docker
 build:

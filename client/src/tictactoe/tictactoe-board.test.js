@@ -3,43 +3,55 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import TicCellComponent from '../_test/FakeView';
+import TicCellComponent from './TicCell';
 
-describe("Tictactoe board", function () {
+import MessageRouter from '../common/framework/message-router';
 
-    var div, component, TicCell;
+describe("Tic Cell", function () {
 
-    var TictactoeBoard;
+var div, component, TicCell;
 
-    beforeEach(function () {
-        TicCell = TicCellComponent(inject({}));
+var commandRouter = MessageRouter(inject({}));
+var eventRouter = MessageRouter(inject({}));
+var commandsReceived=[];
 
-        TictactoeBoard = TictactoeBoardModule(inject({
-            TicCell
-        }));
+commandRouter.on("*", function(cmd){
+    commandsReceived.push(cmd);
+} );
 
-        div = document.createElement('div');
-        component = shallow(<TictactoeBoard />, div);
-    });
+beforeEach(function () {
+    commandsReceived.length=0;
+    TicCell = TicCellComponent(inject({
+        generateUUID:()=>{
+            return "youyouid"
+        },
+        commandPort: commandRouter,
+        eventRouter
+    }));
 
-    it('should render without error', function () {
+    div = document.createElement('div');
 
-    });
+    component = shallow(<TicCell />, div);
 
-    it('should render 9 cells',function(){
-        expect(component.find(TicCell).length).toBe(9);
-    });
+});
 
-    it('should pass coordinates to cell one', function(){
-        expect(JSON.stringify(component.find(TicCell).nodes[0].props.coordinates)).toBe(JSON.stringify({x:0, y:0}));
-    });
+it('should render without error', function () {
 
-    it('should pass coordinates to cell three', function(){
-        expect(JSON.stringify(component.find(TicCell).nodes[2].props.coordinates)).toBe(JSON.stringify({x:2, y:0}));
-    });
+});
 
-    it('should pass coordinates to cell nine', function(){
-        expect(JSON.stringify(component.find(TicCell).nodes[8].props.coordinates)).toBe(JSON.stringify({x:2, y:2}));
-    });
+it('should record move with matching game id and coordinates ',function(){
+});
+
+it('should ignore move with matching gameId but not coordinates',function(){
+});
+
+it('should ignore move with matching coordinates, but not matching gameId',function(){
+});
+
+it('should issue PlaceMove command with gameId, mySide and coordinates when clicked', ()=>{
+    component.find('div').simulate('click');
+
+    // check whether correct command was dispatched through command router
+});
 
 });

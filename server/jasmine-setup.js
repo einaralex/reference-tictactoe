@@ -9,11 +9,13 @@ var consoleReporter = new JasmineConsoleReporter({
     listStyle: 'indent', // "flat"|"indent"
     activity: false
 });
+jasmine.getEnv().addReporter(consoleReporter);
+
 var jasmineReporters = require('jasmine-reporters');
 var junitReporter = new jasmineReporters.JUnitXmlReporter({
-    consolidateAll: true,
+    consolidateAll: false,
     savePath: 'build',
     filePrefix: 'testOutput'
 
 });
-jasmine.getEnv().addReporter(junitReporter, consoleReporter);
+jasmine.getEnv().addReporter(junitReporter);
