@@ -110,12 +110,4 @@ Did you use any of the following features in Jenkins?
 Did you do any monitoring?
 
 - Tried to setup datadog, didn't manage to get the jenkins-datadog-plugin to work
-
- -- notandi: einaralex@gmail.com
- 
- -- leyniorð: grillveisla16
-
-
-
-
  
